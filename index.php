@@ -19,6 +19,15 @@
     
     <div class="container">
 
+    <?php if (isset($_SESSION['message'])) { ?>
+        <div class="alert alert-<?= $_SESSION['message_type']?> alert-dismissible fade show" role="alert">
+            <?= $_SESSION['message']?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <?php session_unset(); } ?>
+
+    <br>
     <form action="./operations/add.php" method="POST">
         <div class="container">
             <div class="row justify-content-md-left">
@@ -57,14 +66,46 @@
     </form> 
 
     <br>
-    <?php if (isset($_SESSION['message'])) { ?>
-        <div class="alert alert-<?= $_SESSION['message_type']?> alert-dismissible fade show" role="alert">
-            <?= $_SESSION['message']?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="container">
+        <div class="row justify-content-md-left">
+            <div class="col col-lg-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Unidad</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $query = "SELECT * from materiales";
+                        $res = mysqli_query($db, $query);
+
+                        while($row = mysqli_fetch_array($res)){ ?>
+                            <tr>
+                                <td><?php echo $row['nombre']?></td>
+                                <td><?php echo $row['unidad_medida']?></td>
+                                <td><?php echo $row['precio']?></td>
+                                <td><?php echo $row['stock']?></td>
+                                <td><?php echo $row['total']?></td>
+                                <td>
+                                    <a href="./operations/edit.php?id=<?php echo $row['id']?>" class="btn btn-primary">
+                                        Editar
+                                    </a>
+                                    <a href="./operations/delete.php?id=<?php echo $row['id']?>" class="btn btn-danger">
+                                        Eliminar
+                                    </a>
+                                </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>  
         </div>
     </div>
-    <?php session_unset(); } ?>
-    
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
 </html>
