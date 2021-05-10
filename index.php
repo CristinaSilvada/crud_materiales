@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <title>Corporativo CA</title>
 </head>
@@ -39,10 +40,10 @@
                     <label for="unit" class="form-label">Unidad de medida</label>
                     <select name="unit" class="form-select" aria-label="Default select example">
                         <option disabled selected>Selecciona una opción</option>
-                        <option value="1">kg</option>
-                        <option value="2">m3</option>
-                        <option value="3">p2</option>
-                        <option value="3">pz</option>
+                        <option value="kg">kg</option>
+                        <option value="m3">m3</option>
+                        <option value="p2">p2</option>
+                        <option value="pz">pz</option>
                     </select>
                 </div>
             </div>
@@ -92,20 +93,97 @@
                                 <td><?php echo $row['stock']?></td>
                                 <td><?php echo $row['total']?></td>
                                 <td>
-                                    <a href="./operations/edit.php?id=<?php echo $row['id']?>" class="btn btn-primary">
+                                    <button type="button" class="btn btn-primary" onclick="setValues('<?php echo $row['id'] ?>', 
+                                    '<?php echo $row['nombre'] ?>',
+                                    '<?php echo $row['unidad_medida'] ?>',
+                                    '<?php echo $row['precio'] ?>',
+                                    '<?php echo $row['stock'] ?>')" data-bs-toggle="modal" data-bs-target="#editModal">
                                         Editar
-                                    </a>
-                                    <a href="./operations/delete.php?id=<?php echo $row['id']?>" class="btn btn-danger">
+                                    </button>
+                                    <a href="./operations/delete.php?id=<?php echo $row['id']?>&stock=<?php echo $row['stock']?>" class="btn btn-danger">
                                         Eliminar
                                     </a>
                                 </td>
-                        </tr>
+                            </tr>
                         <?php } ?>
                     </tbody>
                 </table>
             </div>  
         </div>
     </div>
+
+    <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Editar registro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancelar"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="id" class="form-label">Clave</label>
+                                    <input type="text" disabled class="form-control" name="id" id="id">
+                                </div>
+                                <div class="col">
+                                    <label for="name" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" name="name" id="name">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="unit" class="form-label">Unidad de medida</label>
+                                    <select name="unit" id="unit" class="form-select" aria-label="Default select example">
+                                        <option disabled selected>Selecciona una opción</option>
+                                        <option value="kg">kg</option>
+                                        <option value="m3">m3</option>
+                                        <option value="p2">p2</option>
+                                        <option value="pz">pz</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="price" class="form-label">Precio</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">$</span>
+                                        <input type="text" name="price" id="price" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <label for="stock" class="form-label">Stock</label>
+                                    <input type="text" class="form-control" name="stock" id="stock">
+                                </div>
+                            </div>
+                        </div>
+                    </form> 
+                </div>
+                <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+<script>
+    setValues = function(id, name, unit, price, stock){
+        values = {
+            "id" : id,
+            "name" : name,
+            "unit" : unit,
+            "price" : price,
+            "stock" : stock
+        }
+        $('#id').val(values.id)
+        $('#name').val(values.name)
+        $('#unit').val(values.unit)
+        $('#price').val(values.price)
+        $('#stock').val(values.stock) 
+    }
+</script>
 </html>
