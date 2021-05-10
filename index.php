@@ -32,14 +32,15 @@
     <form action="./operations/add.php" method="POST">
         <div class="container">
             <div class="row justify-content-md-left">
+                <input type="hidden" class="form-control" name="hidden_id" id="id_hidden" required>
                 <div class="col col-lg-4">
                     <label for="name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" name="name">
+                    <input type="text" class="form-control" name="name" id="name" required>
                 </div>
                 <div class="col col-lg-2 col-md-3">
                     <label for="unit" class="form-label">Unidad de medida</label>
-                    <select name="unit" class="form-select" aria-label="Default select example">
-                        <option disabled selected>Selecciona una opción</option>
+                    <select name="unit" class="form-select" id="unit" aria-label="Default select example" required>
+                        <option disabled value="" selected>Selecciona una opción</option>
                         <option value="kg">kg</option>
                         <option value="m3">m3</option>
                         <option value="p2">p2</option>
@@ -53,12 +54,12 @@
                     <label for="price" class="form-label">Precio</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text">$</span>
-                        <input type="text" name="price" class="form-control">
+                        <input type="text" name="price" class="form-control" id="price" required>
                     </div>
                 </div>
                 <div class="col col-lg-2">
                     <label for="stock" class="form-label">Stock</label>
-                    <input type="number" class="form-control" name="stock">
+                    <input type="number" class="form-control" name="stock" id="stock" required>
                 </div>
             </div>
             <br>
@@ -67,8 +68,19 @@
     </form> 
 
     <br>
+    <br>
+   
     <div class="container">
         <div class="row justify-content-md-left">
+            <div class="input-group">
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" />
+                </div>
+                <button type="button" class="btn btn-primary">
+                    Buscar
+                </button>         
+            </div>
+            <br>
             <div class="col col-lg-8">
                 <table class="table">
                     <thead>
@@ -97,7 +109,7 @@
                                     '<?php echo $row['nombre'] ?>',
                                     '<?php echo $row['unidad_medida'] ?>',
                                     '<?php echo $row['precio'] ?>',
-                                    '<?php echo $row['stock'] ?>')" data-bs-toggle="modal" data-bs-target="#editModal">
+                                    '<?php echo $row['stock'] ?>')" >
                                         Editar
                                     </button>
                                     <a href="./operations/delete.php?id=<?php echo $row['id']?>&stock=<?php echo $row['stock']?>" class="btn btn-danger">
@@ -112,62 +124,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Editar registro</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancelar"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="id" class="form-label">Clave</label>
-                                    <input type="text" disabled class="form-control" name="id" id="id">
-                                </div>
-                                <div class="col">
-                                    <label for="name" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" name="name" id="name">
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="unit" class="form-label">Unidad de medida</label>
-                                    <select name="unit" id="unit" class="form-select" aria-label="Default select example">
-                                        <option disabled selected>Selecciona una opción</option>
-                                        <option value="kg">kg</option>
-                                        <option value="m3">m3</option>
-                                        <option value="p2">p2</option>
-                                        <option value="pz">pz</option>
-                                    </select>
-                                </div>
-                                <div class="col">
-                                    <label for="price" class="form-label">Precio</label>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">$</span>
-                                        <input type="text" name="price" id="price" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <label for="stock" class="form-label">Stock</label>
-                                    <input type="text" class="form-control" name="stock" id="stock">
-                                </div>
-                            </div>
-                        </div>
-                    </form> 
-                </div>
-                <div class="modal-footer">
-                    
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
 <script>
@@ -179,7 +135,8 @@
             "price" : price,
             "stock" : stock
         }
-        $('#id').val(values.id)
+
+        $('#id_hidden').val(values.id)
         $('#name').val(values.name)
         $('#unit').val(values.unit)
         $('#price').val(values.price)
