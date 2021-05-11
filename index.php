@@ -29,7 +29,7 @@
     <?php session_unset(); } ?>
 
     <br>
-    <form action="./operations/add.php" method="POST">
+    <form action="./operations/save.php" method="POST">
         <div class="container">
             <div class="row justify-content-md-left">
                 <input type="hidden" class="form-control" name="hidden_id" id="id_hidden" required>
@@ -63,23 +63,35 @@
                 </div>
             </div>
             <br>
-            <button type="submit" class="btn btn-success" name="add">Guardar</button>
+            <button type="submit" class="btn btn-success" name="save">Guardar</button>
         </div>
     </form> 
 
     <br>
     <br>
-   
+    
+    <?php 
+        $search="";
+        $res = "";
+
+        if(isset($_GET['search'])){
+        $search = $_GET['search'];
+        }
+    ?>
+
     <div class="container">
         <div class="row justify-content-md-left">
-            <div class="input-group">
-                <div class="form-outline">
-                    <input type="search" id="form1" class="form-control" />
+            <form method='GET' action="">
+                <div class="input-group">
+                    <div class="form-outline">
+                        <input type="search" id="search" name="search" class="form-control" value="<?php echo $search?>"/>
+                    </div>
+                    <button type="submit" value="search" class="btn btn-primary">
+                        Buscar
+                    </button>         
                 </div>
-                <button type="button" class="btn btn-primary">
-                    Buscar
-                </button>         
-            </div>
+            </form>
+            
             <br>
             <div class="col col-lg-8">
                 <table class="table">
@@ -94,10 +106,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $query = "SELECT * from materiales";
-                        $res = mysqli_query($db, $query);
 
-                        while($row = mysqli_fetch_array($res)){ ?>
+
+                         <?php 
+                            
+
+                            if($search != null){
+                                $search_query = "SELECT * FROM materiales WHERE nombre LIKE '%$search%'";
+                                $res = mysqli_query($db, $search_query);
+                            }else{
+                                $query = "SELECT * from materiales";
+                                $res = mysqli_query($db, $query);
+                            }
+
+                            while($row = mysqli_fetch_array($res)){ ?>
                             <tr>
                                 <td><?php echo $row['nombre']?></td>
                                 <td><?php echo $row['unidad_medida']?></td>
@@ -117,7 +139,7 @@
                                     </a>
                                 </td>
                             </tr>
-                        <?php } ?>
+                        <?php }?>
                     </tbody>
                 </table>
             </div>  
@@ -143,4 +165,5 @@
         $('#stock').val(values.stock) 
     }
 </script>
+
 </html>

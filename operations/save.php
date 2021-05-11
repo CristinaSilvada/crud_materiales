@@ -2,7 +2,7 @@
 
     include("./../database/db.php");
     
-    if(isset($_POST['add'])){
+    if(isset($_POST['save'])){
         $id = $_POST['hidden_id'];
         $name = $_POST['name'];
         $unit = $_POST['unit'];
